@@ -1,0 +1,154 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.attacker {
+  float: left;
+}
+
+.defender {
+  float: left;
+  padding-left: 5px;
+}
+
+.stat {
+  float: left;
+}
+
+.stat-title {
+  width: 250px;
+  height: 25px;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.stat-data {
+  text-align: center;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;  
+}
+
+.median {
+  float: left;
+}
+
+.median-title {
+  width: 250px;
+  height: 25px;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.median-data {
+  width: 250px;
+  height: 175px;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;  
+  font-weight: bold;
+  font-size: xx-large;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.react-tabs {
+  width: 100%;
+}
+
+.combatant-container {
+  display: inline-block;
+}
+
+.statistics-container {
+  display: flex;
+  width: 100%;
+}
+
+.attack_title {
+  width: 110px;
+  height: 51px;
+  float: left;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;  
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.attack_select {
+  width: 154px;
+}
+
+.attack_input {
+  width: 110px;
+  height: 32px;
+  font-size: large;
+  text-align: center;
+}
+
+.attack_field {
+  float: left;
+}
+
+.defense_title {
+  width: 110px;
+  height: 51px;
+  float: left;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;  
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.defense_input {
+  width: 110px;
+  height: 32px;
+  font-size: large;
+  text-align: center;
+}
+
+.defense_field {
+  float: left;
+}
+
+.defense_equiv_radio {
+  border: 1px solid darkgray;
+  background: lightslategray;
+  float: left;
+}
+
+.title {
+  font-weight: bold;
+  font-size: large;
+}
+
