@@ -9,7 +9,7 @@ import woundImage from '../static/media/open-wound.svg'
 import unsavedImage from '../static/media/armor-downgrade.svg'
 import damageImage from '../static/media/wrapped-heart.svg'
 import killImage from '../static/media/death-zone.svg'
-import questionImage from '../static/media/magnifying-glass.svg'
+//import questionImage from '../static/media/magnifying-glass.svg'
 
 class Stat extends React.Component {
     transformData = (data, dist) => {

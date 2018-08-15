@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateDefense } from '../actions/defender'
+import { RuleOptions, RuleOption } from './rule_options'
+import { defense_options } from '../data/options'
+import { addDefenseOption, removeDefenseOption } from '../actions/defender'
 
 class Toughness extends React.Component {
     handleChange = (event) => {
@@ -178,8 +181,8 @@ class DefenseEquiv extends React.Component {
     render() {
         const { defense } = this.props
         return (
-            <div className="defense_equiv">
-                <div className="defense_equiv_radio">
+            <div className="defense-equiv">
+                <div className="defense-equiv-radio">
                     <label htmlFor="geq">
                         GEQ
                         <input
@@ -191,7 +194,7 @@ class DefenseEquiv extends React.Component {
                             onChange={this.handleOptionChange} />
                     </label>
                 </div>
-                <div className="defense_equiv_radio">
+                <div className="defense-equiv-radio">
                     <label htmlFor="meq">
                         MEQ
                         <input
@@ -203,7 +206,7 @@ class DefenseEquiv extends React.Component {
                             onChange={this.handleOptionChange} />
                     </label>
                 </div>
-                <div className="defense_equiv_radio">
+                <div className="defense-equiv-radio">
                     <label htmlFor="teq">
                         TEQ
                         <input
@@ -215,7 +218,7 @@ class DefenseEquiv extends React.Component {
                             onChange={this.handleOptionChange} />
                     </label>
                 </div>
-                <div className="defense_equiv_radio">
+                <div className="defense-equiv-radio">
                     <label htmlFor="veq">
                         VEQ
                         <input
@@ -227,7 +230,7 @@ class DefenseEquiv extends React.Component {
                             onChange={this.handleOptionChange} />
                     </label>
                 </div>
-                <div className="defense_equiv_radio">
+                <div className="defense-equiv-radio">
                     <label htmlFor="keq">
                         KEQ
                         <input
@@ -250,12 +253,31 @@ class Defense extends React.Component {
         return(
             <div className="defense">
                 <div>
+                    <RuleOptions
+                        defense={defense}
+                        dispatch={dispatch}
+                        options={defense_options}
+                        clickFunction={addDefenseOption}
+                        title="Defense Options"
+                        position={170}
+                    />
                     <Toughness key={`${defense.id}_toughness`} defense={defense} dispatch={dispatch}/>
                     <Wounds key={`${defense.id}_wounds`} defense={defense} dispatch={dispatch}/>
                     <Save key={`${defense.id}_save`} defense={defense} dispatch={dispatch}/>
                     <InvulnSave key={`${defense.id}_invulnsave`} defense={defense} dispatch={dispatch}/>
                 </div>
                 <DefenseEquiv defense={defense} dispatch={dispatch}/>
+                <ul>
+                    { defense.options && defense.options.map((option) => (
+                        <RuleOption
+                            key={option.id}
+                            defense={defense}
+                            dispatch={dispatch}
+                            option={option}
+                            clickFunction={removeDefenseOption}
+                        />
+                    ))}
+                </ul>
             </div>
         )
     }
@@ -268,12 +290,17 @@ class Defender extends React.Component {
             <div className='defender'>
                 <div><em className="title">Defense</em></div>
                 <div>
+                    <div className="defense_title" style={{ width: 60 }}>Options</div>
                     <div className="defense_title">Toughness</div>
                     <div className="defense_title">Wounds</div>
                     <div className="defense_title">Save</div>
                     <div className="defense_title">Invuln Save</div>
                 </div>
-                <Defense key={defender.id} defense={defender} dispatch={dispatch}/>
+                <Defense
+                    key={defender.id}
+                    defense={defender}
+                    dispatch={dispatch}
+                />
             </div>
         )
     }

@@ -37,6 +37,7 @@
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.2",
     "react-easy-chart": "^1.0.0",
+    "react-overlays": "^0.8.3",
     "react-redux": "^5.0.7",
     "react-select": "^2.0.0",
     "react-tabs": "^2.2.2",
@@ -102,5 +103,5 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage" : "http://devonjones.github.io/statshammer"
+  "homepage": "http://devonjones.github.io/statshammer"
 }

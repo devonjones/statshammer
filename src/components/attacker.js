@@ -1,10 +1,13 @@
 import React from 'react'
-import Select from 'react-select';
+//import Select from 'react-select';
 import { connect } from 'react-redux'
 import { generateId } from '../utils/utils'
 import { addAttack, updateAttack } from '../actions/attacker'
-  
-class Type extends React.Component {
+import { RuleOptions, RuleOption } from './rule_options'
+import { attack_options } from '../data/options'
+import { addAttackOption, removeAttackOption } from '../actions/attacker'
+
+/*class Type extends React.Component {
     handleChange = (selectedOption) => {
         this.props.dispatch(updateAttack({
             id: this.props.attack.id,
@@ -34,7 +37,7 @@ class Type extends React.Component {
             </div>
         )
     }
-}
+}*/
 
 class AttackCount extends React.Component {
     handleChange = (event) => {
@@ -188,12 +191,31 @@ class Attack extends React.Component {
         return(
             <div className="attack">
                 <div>
+                    <RuleOptions
+                        attack={attack}
+                        options={attack_options}
+                        dispatch={dispatch}
+                        clickFunction={addAttackOption}
+                        title="Attack Options"
+                        position={10}
+                    />
                     {/*<Type attack={attack} dispatch={dispatch}/>*/}
                     <AttackCount attack={attack} dispatch={dispatch}/>
                     <Skill attack={attack} dispatch={dispatch}/>
                     <Strength attack={attack} dispatch={dispatch}/>
                     <AP attack={attack} dispatch={dispatch}/>
                     <Damage attack={attack} dispatch={dispatch}/>
+                </div>
+                <div>
+                { attack.options && attack.options.map((option) => (
+                    <RuleOption
+                        key={option.id}
+                        attack={attack}
+                        dispatch={dispatch}
+                        option={option}
+                        clickFunction={removeAttackOption}
+                    />
+                ))}
                 </div>
             </div>
         )
@@ -218,6 +240,7 @@ class Attacker extends React.Component {
             <div className="attacker">
                 <div><em className="title">Attacks</em></div>
                 <div>
+                    <div className="attack_title" style={{ width: 60 }}>Options</div>
                     {/*<div className="attack_title" style={{width: 148}}>Type</div>*/}
                     <div className="attack_title">Attacks / Shots</div>
                     <div className="attack_title">Ballistic / Weapon Skill</div>
@@ -226,7 +249,11 @@ class Attacker extends React.Component {
                     <div className="attack_title">Damage</div>
                 </div>
                 { attacks && attacks.map((attack, index) => (
-                    <Attack key={attack.id} attack={attack} dispatch={dispatch}/>
+                    <Attack
+                        key={attack.id}
+                        attack={attack}
+                        dispatch={dispatch}
+                    />
                 ))}
                 <div>
                     <button onClick={this.addAttack}>Add Attack</button>

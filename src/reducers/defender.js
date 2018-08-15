@@ -1,7 +1,21 @@
 import {
 	ADD_DEFENSE,
-	UPDATE_DEFENSE
+	UPDATE_DEFENSE,
+	ADD_DEFENSE_OPTION,
+	REMOVE_DEFENSE_OPTION
 } from '../actions/defender'
+import { mergeOptions } from '../data/options'
+
+function defenseOptions(state=[], action) {
+	switch(action.type) {
+		case ADD_DEFENSE_OPTION:
+			return mergeOptions(state, action.option)
+		case REMOVE_DEFENSE_OPTION:
+			return state.filter( (option) => option.id !== action.option.id)
+		default:
+			return state
+	}
+}
 
 export default function defender(state={}, action) {
 	switch(action.type) {
@@ -13,6 +27,10 @@ export default function defender(state={}, action) {
 			//return state.map( (defense) => defense.id !== action.defense.id
 			//	? defense
 			//	: Object.assign({}, defense, parseDefense(action.defense)))
+		case ADD_DEFENSE_OPTION:
+			return {...action.defense, options: defenseOptions(action.defense.options, action)}
+		case REMOVE_DEFENSE_OPTION:
+			return {...action.defense, options: defenseOptions(action.defense.options, action)}
 		default:
 			return state
 	}

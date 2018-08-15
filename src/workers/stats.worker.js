@@ -28,6 +28,40 @@ function copyArray(arr) {
     return newarr
 }
 
+function stage_options(aoptions, doptions, stage) {
+    let newopts = []
+    if(aoptions) {
+        newopts.push(...aoptions.filter((option) => option.stage === stage))
+    }
+    if(doptions)  {
+        newopts.push(...doptions.filter((option) => option.stage === stage))
+    }
+    const retval = {}
+    newopts.forEach((opt) => {
+        if("optid" in opt)  {
+            retval[opt.type] = opt
+        } else {
+            let arr = retval[opt.type]
+            if(!arr) {
+                arr = []
+            }
+            arr.push(opt)
+            retval[opt.type] = arr
+        }
+    })
+    return retval
+}
+
+function sum_modifiers(options) {
+    let retval = 0
+    if(options.modifier) {
+        options.modifier.forEach((modifier) => {
+            retval += modifier.value
+        })
+    }
+    return retval
+}
+
 function recursiveCheckLength(arr) {
     if(arr instanceof Array) {
         if(arr.length === 0) {
@@ -89,6 +123,63 @@ function shots(attacker) {
     return shots
 }
 
+function roll_with_rerolls(rolls, target, options) {
+    const modifiers = sum_modifiers(options)
+    if ("automatic" in options) {
+        return Array.from({length: rolls}, (v, k) => true)
+    }
+    return droll.roll(`${rolls}d6`).rolls.map((roll) => {
+        if(roll === 1) {
+            if ("reroll_one" in options || "reroll_missed" in options) {
+                const reroll1 = droll.roll('1d6').total
+                return (reroll1 + modifiers) >= target
+            } else {
+                return (roll + modifiers) >= target
+            }
+        }
+        const result = (roll + modifiers) >= target
+        if(!result && "reroll_missed" in options) {
+            const rerollm = droll.roll('1d6').total
+            if(rerollm === 1) {
+                return false
+            }
+            return (rerollm + modifiers) >= target
+        } else {
+            return result
+        }
+    })
+}
+
+function roll_with_rerolls_one_fail(rolls, target, options) {
+    const modifiers = sum_modifiers(options)
+    if ("automatic" in options) {
+        return Array.from({length: rolls}, (v, k) => true)
+    }
+    return droll.roll(`${rolls}d6`).rolls.map((roll) => {
+        if(roll === 1) {
+            if ("reroll_one" in options || "reroll_missed" in options) {
+                const reroll1 = droll.roll('1d6').total
+                if(reroll1 === 1) {
+                    return false
+                }
+                return (reroll1 + modifiers) >= target
+            } else {
+                return false
+            }
+        }
+        const result = (roll + modifiers) >= target
+        if(!result && "reroll_missed" in options) {
+            const rerollm = droll.roll('1d6').total
+            if(rerollm === 1) {
+                return false
+            }
+            return (rerollm + modifiers) >= target
+        } else {
+            return result
+        }
+    })
+}
+
 function hits(attacker, defender, shots) {
     /*
      Hit Roll:
@@ -100,12 +191,8 @@ function hits(attacker, defender, shots) {
     */
     const hits = shots.map((shot, index) => {
         if(shot) {
-            return droll.roll(`${shot}d6`).rolls.map((roll) => {
-                if(roll === 1) {
-                    return false
-                }
-                return roll >= attacker[index].skill
-            })
+            const options = stage_options(attacker[index].options, defender.options, 'hits')
+            return roll_with_rerolls_one_fail(shot, attacker[index].skill, options)
         } else {
             return []
         }
@@ -164,22 +251,28 @@ function wounds(attacker, defender, hits) {
     const wounds = hits.map((hit, index) => {
         if(hit) {
             const thresh = target(strength(attacker[index]), defender.toughness)
-            return droll.roll(`${hit}d6`).rolls.map((roll) => {
-                if(defender) {
-                    if (roll === 1) {
-                        return false
-                    }
-                    return roll >= thresh
-                } else {
-                    return ""
-                }
-            })
+            const options = stage_options(attacker[index].options, defender.options, 'wounds')
+            return roll_with_rerolls_one_fail(hit, thresh, options)
         } else {
             return []
         }
     })
     const woundTotals = wounds.map((wound) => wound.filter(x => x).length)
     return woundTotals
+}
+
+function calculate_save(defense, attack) {
+    const save_options = stage_options(attack.options, defense.options, 'saves')
+    const invuln_options = stage_options(attack.options, defense.options, 'invulnsaves')
+    const save = defense.save + attack.ap
+    const invuln = defense.invuln
+    let target = save
+    let options = save_options
+    if(invuln && (invuln + sum_modifiers(save_options)) < (save + sum_modifiers(invuln_options))) {
+        target = invuln
+        options = invuln_options
+    }
+    return { target, options }
 }
 
 function save(attacker, defender, wounds) {
@@ -198,24 +291,44 @@ function save(attacker, defender, wounds) {
     
    const unsaved = wounds.map((wound, index) => {
         if(wound) {
-            return droll.roll(`${wound}d6`).rolls.map((roll) => {
-                if(roll === 1) {
-                    return true
-                }
-                const save = defender.save + attacker[index].ap
-                const invuln = defender.invuln
-                let target = save
-                if(invuln && invuln < save) {
-                    target = invuln
-                }
-                return roll < target
-            })
+            const { target, options } = calculate_save(defender, attacker[index])
+            return roll_with_rerolls(wound, target, options).map((result) => !result)
         } else {
             return []
         }
     })
     const unsavedTotals = unsaved.map((un) => un.filter(x => x).length)
     return unsavedTotals
+}
+
+function disgustingly_resilient(damage, attack, defense, options) {
+    if("disgustingly_resilient" in options) {
+        const dr_options = stage_options(attack.options, defense.options, 'damage_dr')
+        const newDamage = damage.map((d) => {
+            let newDam = 0;
+            droll.roll(`${d}d6`).rolls.forEach((roll) => {
+                if(roll === 1 && "reroll_one" in dr_options) {
+                    const reroll1 = droll.roll(`1d6`).total
+                    if(reroll1 < options.disgustingly_resilient.value) {
+                        newDam += 1
+                    }
+                } else if(roll < options.disgustingly_resilient.value) {
+                    if("reroll_missed" in dr_options) {
+                        const rerollm = droll.roll(`1d6`).total
+                        if(rerollm < options.disgustingly_resilient.value) {
+                            newDam += 1
+                        }
+                    } else {
+                        newDam += 1
+                    }
+                }
+            })
+            return newDam
+        })
+        return newDamage
+    } else {
+        return damage
+    }
 }
 
 function damage(attacker, defender, unsaved) {
@@ -229,6 +342,7 @@ function damage(attacker, defender, unsaved) {
      attack is lost and has no effect.
     */
     const damage = unsaved.map((un, index) => {
+        const options = stage_options(attacker[index].options, defender.options, 'damage')
         let retval = []
         if(un) {
             for(let i = 0; i < un; i++) {
@@ -239,7 +353,7 @@ function damage(attacker, defender, unsaved) {
                 }
             }
         }
-        return retval
+        return disgustingly_resilient(retval, attacker[index], defender, options)
     })
     const damageTotal = damage.map((d) => {
         if (d.length > 0) {

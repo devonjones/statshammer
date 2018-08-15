@@ -1,17 +1,42 @@
 import droll from 'droll'
 import {
 	ADD_ATTACK,
-	UPDATE_ATTACK
+	REMOVE_ATTACK,
+	UPDATE_ATTACK,
+	ADD_ATTACK_OPTION,
+	REMOVE_ATTACK_OPTION
 } from '../actions/attacker'
+import { mergeOptions } from '../data/options'
+
+function attackOptions(state=[], action) {
+	switch(action.type) {
+		case ADD_ATTACK_OPTION:
+			return mergeOptions(state, action.option)
+		case REMOVE_ATTACK_OPTION:
+			return state.filter( (option) => option.id !== action.option.id)
+		default:
+			return state
+	}
+}
 
 export default function attacker(state=[], action) {
 	switch(action.type) {
 		case ADD_ATTACK:
 			return state.concat([action.attack])
+		case REMOVE_ATTACK:
+			return state.filter((attack) => attack.id !== action.attack.id)
 		case UPDATE_ATTACK:
 			return state.map( (attack) => attack.id !== action.attack.id
 				? attack
 				: Object.assign({}, attack, parseAttack(action.attack)))
+		case ADD_ATTACK_OPTION:
+			return state.map( (attack) => attack.id !== action.attack.id
+				? attack
+				: {...attack, options: attackOptions(attack.options, action)})
+		case REMOVE_ATTACK_OPTION:
+			return state.map( (attack) => attack.id !== action.attack.id
+				? attack
+				: {...attack, options: attackOptions(attack.options, action)})
 		default:
 			return state
 	}
