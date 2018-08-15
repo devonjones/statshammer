@@ -59,7 +59,6 @@ class Stat extends React.Component {
             </div>
         )
     }
-
 }
 
 class Median extends React.Component {
@@ -93,7 +92,58 @@ class Median extends React.Component {
             </div>
         )
     }
+}
 
+class Data extends React.Component {
+    transformData = (data) => {
+        let probplus = []
+        let sum = 0.0
+        for(let i = data.length-1; i >= 0; i--) {
+            let value = data[i]
+            if(value) {
+                sum += value
+                probplus.unshift({
+                    cum: `${i}+`,
+                    cum_prob: (sum/100).toFixed(2),
+                    value: `${i}`,
+                    value_prob: (value/100).toFixed(2)
+                })
+            }
+        }
+        return probplus
+    }
+
+    render() {
+        const data = this.transformData(this.props.data)
+        return (
+            <div className="median">
+                <div className="median-title">
+                    {this.props.title}
+                    <img style={{float: 'right'}} src={this.props.image} alt={this.props.title} width={25} height={25}/>
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Num</th>
+                            <th>(p)</th>
+                            <th>&nbsp;&nbsp;</th>
+                            <th>Num+</th>
+                            <th>(p)</th>
+                        </tr>
+                        {data.map((row)  => (
+                            <tr>
+                                <td>{row.value}</td>
+                                <td>{row.value_prob}</td>
+                                <th>&nbsp;&nbsp;</th>
+                                <td>{row.cum}</td>
+                                <td>{row.cum_prob}</td>
+                            </tr>
+                        ))}
+                    </table>
+                </div>
+            </div>
+        )
+    }
 }
 
 function RenderStat(props) {
@@ -108,6 +158,14 @@ function RenderMedian(props) {
     const { stat, title, image } = props
     if(stat) {
         return <Median data={stat} image={image} title={title}/>
+    }
+    return ""
+}
+
+function RenderData(props) {
+    const { stat, title, image } = props
+    if(stat) {
+        return <Data data={stat} image={image} title={title}/>
     }
     return ""
 }
@@ -133,6 +191,10 @@ function Stats(props) {
                     </Tab>
                     <Tab>
                         <a data-tip={tt_med}>Median</a>
+                        <ReactTooltip place="top" type="dark" effect="float"/>
+                    </Tab>
+                    <Tab>
+                        <a data-tip={tt_med}>Data</a>
                         <ReactTooltip place="top" type="dark" effect="float"/>
                     </Tab>
                  </TabList>
@@ -169,6 +231,18 @@ function Stats(props) {
                             <RenderMedian stat={stat.unsaved} image={unsavedImage} title="Unsaved Wounds"/>
                             <RenderMedian stat={stat.damage} image={damageImage} title="Total Damage"/>
                             <RenderMedian stat={stat.allocate} image={killImage} title="Models Killed"/>
+                        </div>
+                    ))}
+                 </TabPanel>
+                 <TabPanel>
+                    { stats && stats.map((stat) => (
+                        <div key={stat.id} className='statistics-container'>
+                            <RenderData stat={stat.shots} image={shotImage} title="Shots"/>
+                            <RenderData stat={stat.hits} image={hitImage} title="Hits"/>
+                            <RenderData stat={stat.wounds} image={woundImage} title="Wounds"/>
+                            <RenderData stat={stat.unsaved} image={unsavedImage} title="Unsaved Wounds"/>
+                            <RenderData stat={stat.damage} image={damageImage} title="Total Damage"/>
+                            <RenderData stat={stat.allocate} image={killImage} title="Models Killed"/>
                         </div>
                     ))}
                  </TabPanel>
