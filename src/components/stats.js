@@ -73,7 +73,7 @@ class Median extends React.Component {
                 }
             }
         }
-        return ""
+        return 0
     }
 
     render() {
