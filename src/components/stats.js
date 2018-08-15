@@ -175,6 +175,7 @@ function Stats(props) {
     const tt_cum = "This distribution shows the liklihood on the Y-Axis that a particular result will be that much or larger."
     const tt_dist = "This distribution shows the liklihood on the Y-Axis for each particular result."
     const tt_med = "This shows what the result will be where half of all results are lower and half are higher"
+    const tt_data = "This shows a probability table.  First column is how many succeded for that step.  Second is the probability of those results.  Third is a result *or better*.  Fourth is the probability of the third column."
 
     if(stats) {
         return (
@@ -194,7 +195,7 @@ function Stats(props) {
                         <ReactTooltip place="top" type="dark" effect="float"/>
                     </Tab>
                     <Tab>
-                        <a data-tip={tt_med}>Data</a>
+                        <a data-tip={tt_data}>Data</a>
                         <ReactTooltip place="top" type="dark" effect="float"/>
                     </Tab>
                  </TabList>
