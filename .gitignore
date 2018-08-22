@@ -22,3 +22,5 @@ yarn-error.log*
 
 *.sw[po]
 *.bak
+
+package-lock.json
