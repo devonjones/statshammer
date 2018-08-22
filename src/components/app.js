@@ -15,12 +15,11 @@ class App extends React.Component {
     }
     
     render () {
-        const { defenders, dispatch } = this.props
         return (
             <div className='container'>
                 <div className='combatant-container'>
                     <Attacker />
-                    <Defender defenders={defenders} dispatch={dispatch}></Defender>
+                    <Defender />
                 </div>
                 <Stats />
             </div>
@@ -29,6 +28,4 @@ class App extends React.Component {
 }
 
 export default connect((state) => ({
-    attacks: state.attacker,
-    defenders: state.defenders
 }))(App)

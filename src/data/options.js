@@ -1,17 +1,18 @@
-import shotImage from '../static/media/target-shot.svg'
+import { generateId } from '../utils/utils'
+//import shotImage from '../static/media/target-shot.svg'
 import hitImage from '../static/media/helmet-head-shot.svg'
 import woundImage from '../static/media/open-wound.svg'
 import unsavedImage from '../static/media/armor-downgrade.svg'
 import invulnsaveImage from '../static/media/armor-upgrade.svg'
 import damageImage from '../static/media/wrapped-heart.svg'
-import killImage from '../static/media/death-zone.svg'
+//import killImage from '../static/media/death-zone.svg'
 
 export function mergeOptions(state, option) {
 	const newstate = []
 	if(option.optid) {
 		let added = false
 		state.forEach(element => {
-			if("optid" in element && element.optid == option.optid) {
+			if("optid" in element && element.optid === option.optid) {
 				newstate.push(option)
 				added = true;
 			} else {
@@ -29,6 +30,7 @@ export function mergeOptions(state, option) {
 
 export const attack_options = [
     {
+        uniq: generateId(),
         optid: 'reroll-hit',
         stage: 'hits',
         type: 'automatic',
@@ -36,6 +38,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-hit',
         stage: 'hits',
         type: 'reroll_missed',
@@ -43,6 +46,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-hit',
         stage: 'hits',
         type: 'reroll_one',
@@ -50,6 +54,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         stage: 'hits',
         type: 'modifier',
         text: 'Hit: Assault, Advanced',
@@ -57,6 +62,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         stage: 'hits',
         type: 'modifier',
         text: 'Hit: Heavy, Moved',
@@ -64,6 +70,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         stage: 'hits',
         type: 'modifier',
         text: 'Hit: +1',
@@ -71,6 +78,7 @@ export const attack_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-wound',
         stage: 'wounds',
         type: 'automatic',
@@ -78,6 +86,7 @@ export const attack_options = [
         image: woundImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-wound',
         stage: 'wounds',
         type: 'reroll_missed',
@@ -85,6 +94,7 @@ export const attack_options = [
         image: woundImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-wound',
         stage: 'wounds',
         type: 'reroll_one',
@@ -92,6 +102,7 @@ export const attack_options = [
         image: woundImage
     },
     {
+        uniq: generateId(),
         stage: 'wounds',
         type: 'modifier',
         text: 'Wound: +1',
@@ -99,6 +110,7 @@ export const attack_options = [
         image: woundImage
     },
     {
+        uniq: generateId(),
         stage: 'saves',
         type: 'modifier',
         text: 'Save: -1',
@@ -106,6 +118,7 @@ export const attack_options = [
         image: unsavedImage
     },
     {
+        uniq: generateId(),
         stage: 'invulnsaves',
         type: 'modifier',
         text: 'Invuln Save: -1',
@@ -116,6 +129,7 @@ export const attack_options = [
 
 export const defense_options = [
     {
+        uniq: generateId(),
         stage: 'hits',
         type: 'modifier',
         text: 'Hit: -1',
@@ -123,6 +137,7 @@ export const defense_options = [
         image: hitImage
     },
     {
+        uniq: generateId(),
         stage: 'wounds',
         type: 'modifier',
         text: 'Wound: -1',
@@ -130,6 +145,7 @@ export const defense_options = [
         image: woundImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-save',
         stage: 'saves',
         type: 'reroll_missed',
@@ -137,6 +153,7 @@ export const defense_options = [
         image: unsavedImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-save',
         stage: 'saves',
         type: 'reroll_one',
@@ -144,6 +161,7 @@ export const defense_options = [
         image: unsavedImage
     },
     {
+        uniq: generateId(),
         stage: 'saves',
         type: 'modifier',
         text: 'Cover',
@@ -151,6 +169,7 @@ export const defense_options = [
         image: unsavedImage
     },
     {
+        uniq: generateId(),
         stage: 'saves',
         type: 'modifier',
         text: 'Save: +1',
@@ -158,6 +177,7 @@ export const defense_options = [
         image: unsavedImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-invulnsave',
         stage: 'invulnsaves',
         type: 'reroll_missed',
@@ -165,6 +185,7 @@ export const defense_options = [
         image: invulnsaveImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-invulnsave',
         stage: 'invulnsaves',
         type: 'reroll_one',
@@ -172,6 +193,7 @@ export const defense_options = [
         image: invulnsaveImage
     },
     {
+        uniq: generateId(),
         stage: 'invulnsaves',
         type: 'modifier',
         text: 'Invuln Save: +1',
@@ -179,6 +201,7 @@ export const defense_options = [
         image: invulnsaveImage
     },
     {
+        uniq: generateId(),
         optid: 'disgustingly_resilient',
         stage: 'damage',
         type: 'disgustingly_resilient',
@@ -187,6 +210,7 @@ export const defense_options = [
         image: damageImage
     },
     {
+        uniq: generateId(),
         optid: 'disgustingly_resilient',
         stage: 'damage',
         type: 'disgustingly_resilient',
@@ -195,6 +219,7 @@ export const defense_options = [
         image: damageImage
     },
     {
+        uniq: generateId(),
         optid: 'disgustingly_resilient',
         stage: 'damage',
         type: 'disgustingly_resilient',
@@ -203,13 +228,15 @@ export const defense_options = [
         image: damageImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-dr',
         stage: 'damage_dr',
-        type: 'reroll_one',
+        type: 'reroll_missed',
         text: 'Reroll FNP/DR: Missed',
         image: damageImage
     },
     {
+        uniq: generateId(),
         optid: 'reroll-dr',
         stage: 'daamage_dr',
         type: 'reroll_one',

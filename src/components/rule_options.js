@@ -15,19 +15,18 @@ const backdropStyle = {
     opacity: 0.5
 };
 
-const dialogStyle = function(position) {
+const dialogStyle = function() {
     // we use some psuedo random coords so nested modals
     // don't sit right on top of each other.
-  
     return {
         position: 'absolute',
-        width: 400,
-        top: '50%', left: '50%',
-        transform: `translate(-${position}%, -50%)`,
+        top: '5%', left: '10px',
+        width: '90%',
         border: '1px solid #e5e5e5',
         backgroundColor: 'white',
         boxShadow: '0 5px 15px rgba(0,0,0,.5)',
-        padding: 20
+        padding: 20,
+        overflow: 'auto',
     };
 };
 
@@ -36,11 +35,11 @@ export class RuleOption extends React.Component {
     render() {
         const { option } = this.props
         return (
-            <li className="option-display">
+            <div className="option-display">
                 <button onClick={this.selectOption} className="option-button">
                     <img src={option.image} alt={option.text} width={20} height={20}/> {this.props.option.text}
                 </button>
-            </li>
+            </div>
         )
     }
 
@@ -56,7 +55,7 @@ export class RuleOptions extends React.Component {
     state = { showModal: false };
 
     render() {
-        const { attack, defense, title, options, dispatch, clickFunction, position } = this.props
+        const { attack, defense, title, options, dispatch, clickFunction } = this.props
         return (
             <div className='options'>
                 <button className='options-field' onClick={this.open}>
@@ -70,11 +69,12 @@ export class RuleOptions extends React.Component {
                     show={this.state.showModal}
                     onHide={this.close}
                 >
-                    <div style={dialogStyle(position)} >
+                    <div style={dialogStyle()} >
                         <h4 id='modal-label'>{title}</h4>
-                        <ul>
+                        <div className="options-container">
                             { options && options.map((option) => (
                                 <RuleOption
+                                    key={`${option.uniq}`}
                                     attack={attack}
                                     defense={defense}
                                     dispatch={dispatch}
@@ -82,17 +82,17 @@ export class RuleOptions extends React.Component {
                                     clickFunction={clickFunction}
                                 />
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 </Modal>
             </div>
         )
     }
     close = () =>{
-        this.setState({ showModal: false });
+        this.setState({ showModal: false, component: null });
     }
     
-    open = () => {
-        this.setState({ showModal: true });
+    open = (event) => {
+        this.setState({ showModal: true, component: event.target });
     }
 }

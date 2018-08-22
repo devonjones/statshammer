@@ -1,8 +1,9 @@
 import React from 'react'
+import { Fragment } from 'react'
 //import Select from 'react-select';
 import { connect } from 'react-redux'
 import { generateId } from '../utils/utils'
-import { addAttack, updateAttack } from '../actions/attacker'
+import { addAttack, removeAttack, updateAttack } from '../actions/attacker'
 import { RuleOptions, RuleOption } from './rule_options'
 import { attack_options } from '../data/options'
 import { addAttackOption, removeAttackOption } from '../actions/attacker'
@@ -27,9 +28,9 @@ import { addAttackOption, removeAttackOption } from '../actions/attacker'
           ];
           
         return (
-            <div className="attack_type attack_field">
+            <div className="attack-type attack-field">
                 <Select
-                    className='attack_select_damage attack_select'
+                    className='attack-select-damage attack-select'
                     value={type}
                     defaultValue={type}
                     onChange={this.handleChange}
@@ -50,9 +51,9 @@ class AttackCount extends React.Component {
     render() {
         const { type, attackCount } = this.props.attack;
         return (
-            <div className="attack_count attack_field">
+            <div className="attack-count attack-field">
                 <input
-                    className='attack_input_count attack_input'
+                    className='attack-input-count attack-input'
                     type='text'
                     value={attackCount}
                     placeholder={ type === "melee" ? "Attacks" : "Shots" }
@@ -87,9 +88,9 @@ class Skill extends React.Component {
     render () {
         const { type } = this.props.attack
         return (
-            <div className="attack_skill attack_field">
+            <div className="attack-skill attack-field">
                 <input
-                    className='attack_input_skill attack_input'
+                    className='attack-input-skill attack-input'
                     type='text'
                     value={this.renderSkill()}
                     placeholder={ type.value === "melee"
@@ -114,9 +115,9 @@ class Strength extends React.Component {
     render () {
         const { strength } = this.props.attack
         return (
-            <div className="attack_strength attack_field">
+            <div className="attack-strength attack-field">
                 <input
-                    className='attack_input_strength attack_input'
+                    className='attack-input-strength attack-input'
                     type='text'
                     value={strength}
                     placeholder='Strength'
@@ -147,9 +148,9 @@ class AP extends React.Component {
 
     render () {
         return (
-            <div className="attack_ap attack_field">
+            <div className="attack-ap attack-field">
                 <input
-                    className='attack_input_ap attack_input'
+                    className='attack-input-ap attack-input'
                     type='text'
                     value={this.renderAp()}
                     placeholder='AP'
@@ -172,9 +173,9 @@ class Damage extends React.Component {
     render () {
         const { damage } = this.props.attack
         return (
-            <div className="attack_damage attack_field">
+            <div className="attack-damage attack-field">
                 <input
-                    className='attack_input_damage attack_input'
+                    className='attack-input-damage attack-input'
                     type='text'
                     value={damage}
                     placeholder='Damage'
@@ -188,40 +189,55 @@ class Damage extends React.Component {
 class Attack extends React.Component {
     render() {
         const { attack, dispatch } = this.props
-        return(
-            <div className="attack">
-                <div>
-                    <RuleOptions
+        return (
+            <Fragment>
+                <RuleOptions
                         attack={attack}
                         options={attack_options}
                         dispatch={dispatch}
                         clickFunction={addAttackOption}
                         title="Attack Options"
-                        position={10}
+                        position={60}
                     />
-                    {/*<Type attack={attack} dispatch={dispatch}/>*/}
-                    <AttackCount attack={attack} dispatch={dispatch}/>
-                    <Skill attack={attack} dispatch={dispatch}/>
-                    <Strength attack={attack} dispatch={dispatch}/>
-                    <AP attack={attack} dispatch={dispatch}/>
-                    <Damage attack={attack} dispatch={dispatch}/>
+                {/*<Type attack={attack} dispatch={dispatch}/>*/}
+                <AttackCount attack={attack} dispatch={dispatch}/>
+                <Skill attack={attack} dispatch={dispatch}/>
+                <Strength attack={attack} dispatch={dispatch}/>
+                <AP attack={attack} dispatch={dispatch}/>
+                <Damage attack={attack} dispatch={dispatch}/>
+                <div className="attack-options-display options-container">
+                    { attack.options && attack.options.map((option) => (
+                        <RuleOption
+                            key={option.id}
+                            attack={attack}
+                            dispatch={dispatch}
+                            option={option}
+                            clickFunction={removeAttackOption}
+                        />
+                    ))}
                 </div>
-                <div>
-                { attack.options && attack.options.map((option) => (
-                    <RuleOption
-                        key={option.id}
-                        attack={attack}
-                        dispatch={dispatch}
-                        option={option}
-                        clickFunction={removeAttackOption}
-                    />
-                ))}
-                </div>
-            </div>
+            </Fragment>
         )
     }
 }
 
+class RemoveAttack extends React.Component {
+    removeAttack = (e) => {
+		e.preventDefault()
+
+		this.props.dispatch(removeAttack(this.props.attacks.slice(-1)[0]))
+    }
+
+    render() {
+        const { attacks } = this.props
+        if(attacks.length > 1) {
+            return (
+                <button onClick={this.removeAttack}>Remove Attack</button>
+            )
+        }
+        return null;
+    }
+}
 
 class Attacker extends React.Component {
     addAttack = (e) => {
@@ -233,30 +249,31 @@ class Attacker extends React.Component {
         }))
     }
 
-    
     render() {
         const { attacks, dispatch } = this.props
         return (
             <div className="attacker">
                 <div><em className="title">Attacks</em></div>
-                <div>
-                    <div className="attack_title" style={{ width: 60 }}>Options</div>
+                <div className="attack-container">
+                    <div className="attack-title">Options</div>
                     {/*<div className="attack_title" style={{width: 148}}>Type</div>*/}
-                    <div className="attack_title">Attacks / Shots</div>
-                    <div className="attack_title">Ballistic / Weapon Skill</div>
-                    <div className="attack_title">Strength</div>
-                    <div className="attack_title">AP</div>
-                    <div className="attack_title">Damage</div>
+                    <div className="attack-title">Attacks / Shots</div>
+                    <div className="attack-title">Ballistic / Weapon Skill</div>
+                    <div className="attack-title">Strength</div>
+                    <div className="attack-title">AP</div>
+                    <div className="attack-title">Damage</div>
+                    { attacks && attacks.map((attack, index) => (
+                        <Attack
+                            key={attack.id}
+                            index={index}
+                            attack={attack}
+                            dispatch={dispatch}
+                        />
+                    ))}
                 </div>
-                { attacks && attacks.map((attack, index) => (
-                    <Attack
-                        key={attack.id}
-                        attack={attack}
-                        dispatch={dispatch}
-                    />
-                ))}
                 <div>
                     <button onClick={this.addAttack}>Add Attack</button>
+                    <RemoveAttack attacks={attacks} dispatch={dispatch} />
                 </div>
             </div>
         )

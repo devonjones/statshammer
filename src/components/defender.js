@@ -1,4 +1,5 @@
 import React from 'react'
+import { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { updateDefense } from '../actions/defender'
 import { RuleOptions, RuleOption } from './rule_options'
@@ -17,9 +18,9 @@ class Toughness extends React.Component {
     render() {
         const { toughness } = this.props.defense;
         return (
-            <div className="defense_toughness defense_field">
+            <div className="defense-toughness defense-field">
                 <input
-                    className='defense_input_toughness defense_input'
+                    className='defense-input-toughness defense-input'
                     type='text'
                     value={toughness}
                     placeholder='Toughness'
@@ -42,9 +43,9 @@ class Wounds extends React.Component {
     render() {
         const { wounds } = this.props.defense;
         return (
-            <div className="defense_wounds defense_field">
+            <div className="defense-wounds defense-field">
                 <input
-                    className='defense_input_toughness defense_input'
+                    className='defense-input-toughness defense-input'
                     type='text'
                     value={wounds}
                     placeholder='Wounds'
@@ -76,9 +77,9 @@ class Save extends React.Component {
 
     render () {
         return (
-            <div className="defense_save defense_field">
+            <div className="defense-save defense-field">
                 <input
-                    className='defense_input_toughness defense_input'
+                    className='defense-input-toughness defense-input'
                     type='text'
                     value={this.renderSave()}
                     placeholder='Save'
@@ -111,9 +112,9 @@ class InvulnSave extends React.Component {
 
     render () {
         return (
-            <div className="defense_invuln_save defense_field">
+            <div className="defense-invuln-save defense-field">
                 <input
-                    className='defense_input_toughness defense_input'
+                    className='defense-input-toughness defense-input'
                     type='text'
                     value={this.renderInvulnSave()}
                     placeholder='Invuln Save'
@@ -251,23 +252,21 @@ class Defense extends React.Component {
     render() {
         const { defense, dispatch } = this.props
         return(
-            <div className="defense">
-                <div>
-                    <RuleOptions
-                        defense={defense}
-                        dispatch={dispatch}
-                        options={defense_options}
-                        clickFunction={addDefenseOption}
-                        title="Defense Options"
-                        position={170}
-                    />
-                    <Toughness key={`${defense.id}_toughness`} defense={defense} dispatch={dispatch}/>
-                    <Wounds key={`${defense.id}_wounds`} defense={defense} dispatch={dispatch}/>
-                    <Save key={`${defense.id}_save`} defense={defense} dispatch={dispatch}/>
-                    <InvulnSave key={`${defense.id}_invulnsave`} defense={defense} dispatch={dispatch}/>
-                </div>
+            <Fragment>
+                <RuleOptions
+                    defense={defense}
+                    dispatch={dispatch}
+                    options={defense_options}
+                    clickFunction={addDefenseOption}
+                    title="Defense Options"
+                    position={10}
+                />
+                <Toughness key={`${defense.id}_toughness`} defense={defense} dispatch={dispatch}/>
+                <Wounds key={`${defense.id}_wounds`} defense={defense} dispatch={dispatch}/>
+                <Save key={`${defense.id}_save`} defense={defense} dispatch={dispatch}/>
+                <InvulnSave key={`${defense.id}_invulnsave`} defense={defense} dispatch={dispatch}/>
                 <DefenseEquiv defense={defense} dispatch={dispatch}/>
-                <ul>
+                <div className="defense-options-display options-container">
                     { defense.options && defense.options.map((option) => (
                         <RuleOption
                             key={option.id}
@@ -277,8 +276,8 @@ class Defense extends React.Component {
                             clickFunction={removeDefenseOption}
                         />
                     ))}
-                </ul>
-            </div>
+                </div>
+            </Fragment>
         )
     }
 }
@@ -289,18 +288,18 @@ class Defender extends React.Component {
         return (
             <div className='defender'>
                 <div><em className="title">Defense</em></div>
-                <div>
-                    <div className="defense_title" style={{ width: 60 }}>Options</div>
-                    <div className="defense_title">Toughness</div>
-                    <div className="defense_title">Wounds</div>
-                    <div className="defense_title">Save</div>
-                    <div className="defense_title">Invuln Save</div>
+                <div className="defense-container">
+                    <div className="defense-title">Options</div>
+                    <div className="defense-title">Toughness</div>
+                    <div className="defense-title">Wounds</div>
+                    <div className="defense-title">Save</div>
+                    <div className="defense-title">Invuln Save</div>
+                    <Defense
+                        key={defender.id}
+                        defense={defender}
+                        dispatch={dispatch}
+                    />
                 </div>
-                <Defense
-                    key={defender.id}
-                    defense={defender}
-                    dispatch={dispatch}
-                />
             </div>
         )
     }
