@@ -23,9 +23,9 @@ export function updateDefenseImpl(defense) {
 export function updateDefense(defense) {
     return (dispatch, getState) => {
         dispatch(updateDefenseImpl(defense))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
@@ -42,9 +42,9 @@ function addDefenseOptionImpl(defense, option) {
 export function addDefenseOption(_, defense, option) {
     return (dispatch, getState) => {
         dispatch(addDefenseOptionImpl(defense, option))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
@@ -59,9 +59,9 @@ function removeDefenseOptionImpl(defense, option) {
 export function removeDefenseOption(_, defense, option) {
     return (dispatch, getState) => {
         dispatch(removeDefenseOptionImpl(defense, option))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 

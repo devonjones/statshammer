@@ -8,13 +8,14 @@ export function statsCalculated(stats) {
     }
 }
 
-export function calculateStats(attacker, defender) {
+export function calculateStats(attacker, defender, combat) {
     return {
         type: CALCULATE_STATS,
         meta: {
             WebWorker: true
         },
         attacker,
-        defender
+        defender,
+        combat
     }
 }

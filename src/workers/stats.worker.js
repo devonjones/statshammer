@@ -105,7 +105,8 @@ self.addEventListener('message', (event) => {
     const data = event.data;
     const attacker = data.attacker
     const defender = data.defender
-    const result = iterate(attacker, defender)
+    const combat = data.combat
+    const result = iterate(attacker, defender, combat)
     self.postMessage(statsCalculated(result))
 })
 
@@ -396,7 +397,7 @@ function iteration(attacker, defender) {
     return results
 }
 
-function iterate(attacker, defender) {
+function iterate(attacker, defender, combat) {
     let testShots = attacker.map(() => [])
     let testHits = attacker.map(() => [])
     let testWounds = attacker.map(() => [])

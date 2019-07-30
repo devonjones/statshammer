@@ -1,3 +1,5 @@
+/* Basics */
+
 body {
   margin: 0;
   padding: 0;
@@ -14,12 +16,131 @@ body {
   font-size: large;
 }
 
+/* Attacker */
 
+.attacker {
+  padding: 5px;
+}
 
+.combat-type {
+  grid-column: 1 / span 7;
+}
 
+.combat-type-radio {
+  border: 1px solid darkgray;
+  background: lightslategray;
+  float: left;
+}
 
+.attack-container {
+  display: grid;
+  grid-template-columns: 65px 133px 110px 110px 110px 110px 110px; 
+}
 
+.attack-title {
+  height: 40;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+  align-self: center;
+}
 
+.attack-remove {
+  grid-column: 1 / span 7;
+  padding-bottom: 5px;
+}
+
+.attack-select {
+  width: 134px;
+}
+
+.attack-input {
+  width: 110px;
+  height: 32px;
+  font-size: large;
+  text-align: center;
+}
+
+/* Defender */
+
+.defender {
+  padding: 5px;
+}
+
+.defense-container {
+  display: grid;
+  grid-template-columns: 65px 110px 110px 110px 116px; 
+}
+
+.defense-title {
+  height: 40;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 2px 2px;
+}
+
+.defense-input {
+  width: 110px;
+  height: 32px;
+  font-size: large;
+  text-align: center;
+}
+
+.defense-equiv {
+  grid-column: 1 / span 5;
+}
+
+.defense-equiv-radio {
+  border: 1px solid darkgray;
+  background: lightslategray;
+  float: left;
+}
+
+.options {
+  height: 32px;
+  width: 65px;
+  text-align: center;
+}
+
+/* Options */
+
+.options-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.options-field {
+  width: 65px;
+  float: left;
+}
+
+.option-button {
+  font-weight: bold;
+  font-size: large;
+}
+
+.defense-options-display {
+  grid-column: 1 / span 5;
+}
+
+.attack-options-display {
+  grid-column: 1 / span 7;
+}
+
+/* Statistics */
 
 .stat {
   float: left;
@@ -85,114 +206,4 @@ body {
 .statistics-container {
   display: flex;
   width: 100%;
-}
-
-
-
-.attacker {
-  padding: 5px;
-}
-
-.attack-container {
-  display: grid;
-  grid-template-columns: 65px 110px 110px 110px 110px 110px; 
-}
-
-.attack-title {
-  height: 40;
-  -moz-appearance: textfield;
-  -webkit-appearance: textfield;
-  background-color: white;
-  background-color: -moz-field;
-  margin-top: 5px;
-  font-weight: bold;
-  text-align: center;
-  padding: 2px 2px;
-  align-self: center;
-}
-
-.attack-remove {
-  grid-column: 1 / span 6;
-  padding-bottom: 5px;
-}
-
-.attack-select {
-  width: 154px;
-}
-
-.attack-input {
-  width: 110px;
-  height: 32px;
-  font-size: large;
-  text-align: center;
-}
-
-.defender {
-  padding: 5px;
-}
-
-.defense-container {
-  display: grid;
-  grid-template-columns: 65px 110px 110px 110px 116px; 
-}
-
-.defense-title {
-  height: 40;
-  -moz-appearance: textfield;
-  -webkit-appearance: textfield;
-  background-color: white;
-  background-color: -moz-field;
-  margin-top: 5px;
-  font-weight: bold;
-  text-align: center;
-  padding: 2px 2px;
-}
-
-.defense-input {
-  width: 110px;
-  height: 32px;
-  font-size: large;
-  text-align: center;
-}
-
-.defense-equiv {
-  grid-column: 1 / span 5;
-}
-
-.defense-equiv-radio {
-  border: 1px solid darkgray;
-  background: lightslategray;
-  float: left;
-}
-
-.options {
-  height: 32px;
-  width: 65px;
-  text-align: center;
-}
-
-.attack-options-display {
-  grid-column: 1 / span 6;
-}
-
-.defense-options-display {
-  grid-column: 1 / span 5;
-}
-
-.options-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-}
-
-.options-field {
-  width: 65px;
-  float: left;
-}
-
-.option-button {
-  font-weight: bold;
-  font-size: large;
 }

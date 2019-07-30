@@ -1,14 +1,15 @@
 import React from 'react'
 import { Fragment } from 'react'
-//import Select from 'react-select';
+import Select from 'react-select';
 import { connect } from 'react-redux'
 import { generateId } from '../utils/utils'
 import { addAttack, removeAttack, updateAttack } from '../actions/attacker'
+import { updateCombat } from '../actions/combat'
 import { RuleOptions, RuleOption } from './rule_options'
 import { attack_options } from '../data/options'
 import { addAttackOption, removeAttackOption } from '../actions/attacker'
 
-/*class Type extends React.Component {
+class Type extends React.Component {
     handleChange = (selectedOption) => {
         this.props.dispatch(updateAttack({
             id: this.props.attack.id,
@@ -38,7 +39,7 @@ import { addAttackOption, removeAttackOption } from '../actions/attacker'
             </div>
         )
     }
-}*/
+}
 
 class AttackCount extends React.Component {
     handleChange = (event) => {
@@ -199,7 +200,7 @@ class Attack extends React.Component {
                         title="Attack Options"
                         position={60}
                     />
-                {/*<Type attack={attack} dispatch={dispatch}/>*/}
+                <Type attack={attack} dispatch={dispatch}/>
                 <AttackCount attack={attack} dispatch={dispatch}/>
                 <Skill attack={attack} dispatch={dispatch}/>
                 <Strength attack={attack} dispatch={dispatch}/>
@@ -217,6 +218,80 @@ class Attack extends React.Component {
                     ))}
                 </div>
             </Fragment>
+        )
+    }
+}
+
+class AttackType extends React.Component {
+    handleOptionChange = (event) => {
+        return this.props.dispatch(updateCombat({type: event.target.value}))
+    }
+
+    render() {
+        const { combat } = this.props
+        return (
+            <div className="combat-type">
+                <div className="combat-type-radio">
+                    <label htmlFor="stationary">
+                        Stationary
+                        <input
+                            type="radio"
+                            id="stationary"
+                            name="attack_type"
+                            value="stationary"
+                            checked={combat.type === 'stationary'}
+                            onChange={this.handleOptionChange} />
+                    </label>
+                </div>
+                <div className="combat-type-radio">
+                    <label htmlFor="moved">
+                        Moved
+                        <input
+                            type="radio"
+                            id="moved"
+                            name="attack_type"
+                            value="moved"
+                            checked={combat.type === 'moved'}
+                            onChange={this.handleOptionChange} />
+                    </label>
+                </div>
+                <div className="combat-type-radio">
+                    <label htmlFor="advanced">
+                        Advanced
+                        <input
+                            type="radio"
+                            id="advanced"
+                            name="attack_type"
+                            value="advanced"
+                            checked={combat.type === 'advanced'}
+                            onChange={this.handleOptionChange} />
+                    </label>
+                </div>
+                <div className="combat-type-radio">
+                    <label htmlFor="overwatch">
+                        Overwatch
+                        <input
+                            type="radio"
+                            id="overwatch"
+                            name="attack_type"
+                            value="overwatch"
+                            checked={combat.type === 'overwatch'}
+                            onChange={this.handleOptionChange} />
+                    </label>
+                </div>
+                <div className="combat-type-radio">
+                    <label htmlFor="melee">
+                        Melee
+                        <input
+                            type="radio"
+                            id="melee"
+                            name="attack_type"
+                            value="melee"
+                            checked={combat.type === 'melee'}
+                            onChange={this.handleOptionChange} />
+                    </label>
+                </div>
+            </div>
         )
     }
 }
@@ -250,13 +325,13 @@ class Attacker extends React.Component {
     }
 
     render() {
-        const { attacks, dispatch } = this.props
+        const { attacks, combat, dispatch } = this.props
         return (
             <div className="attacker">
                 <div><em className="title">Attacks</em></div>
                 <div className="attack-container">
                     <div className="attack-title">Options</div>
-                    {/*<div className="attack_title" style={{width: 148}}>Type</div>*/}
+                    <div className="attack-title">Type</div>
                     <div className="attack-title">Attacks / Shots</div>
                     <div className="attack-title">Ballistic / Weapon Skill</div>
                     <div className="attack-title">Strength</div>
@@ -271,6 +346,7 @@ class Attacker extends React.Component {
                         />
                     ))}
                 </div>
+                <AttackType combat={combat} dispatch={dispatch} />
                 <div>
                     <button onClick={this.addAttack}>Add Attack</button>
                     <RemoveAttack attacks={attacks} dispatch={dispatch} />
@@ -281,5 +357,6 @@ class Attacker extends React.Component {
 }
 
 export default connect( (state) =>  ({
-    attacks: state.attacker
+    attacks: state.attacker,
+    combat: state.combat
 }))(Attacker)

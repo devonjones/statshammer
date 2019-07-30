@@ -6,12 +6,22 @@ export const UPDATE_ATTACK = 'UPDATE_ATTACK'
 export const ADD_ATTACK_OPTION = 'ADD_ATTACK_OPTION'
 export const REMOVE_ATTACK_OPTION = 'REMOVE_ATTACK_OPTION'
 
-export function addAttack(attack) {
+export function addAttackImpl(attack) {
     return {
         type: ADD_ATTACK,
         attack
     }
 }
+
+export function addAttack(attack) {
+    return (dispatch, getState) => {
+        dispatch(addAttackImpl(attack))
+        const { attacker, defender, combat } = getState()
+
+        dispatch(calculateStats(attacker, defender, combat))
+    }
+}
+
 
 function removeAttackImpl(attack) {
     return {
@@ -23,9 +33,9 @@ function removeAttackImpl(attack) {
 export function removeAttack(attack) {
     return (dispatch, getState) => {
         dispatch(removeAttackImpl(attack))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
@@ -39,9 +49,9 @@ function updateAttackImpl(attack) {
 export function updateAttack(attack) {
     return (dispatch, getState) => {
         dispatch(updateAttackImpl(attack))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
@@ -57,9 +67,9 @@ function addAttackOptionImpl(attack, option) {
 export function addAttackOption(attack, _, option) {
     return (dispatch, getState) => {
         dispatch(addAttackOptionImpl(attack, option))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
@@ -74,9 +84,9 @@ function removeAttackOptionImpl(attack, option) {
 export function removeAttackOption(attack, _, option) {
     return (dispatch, getState) => {
         dispatch(removeAttackOptionImpl(attack, option))
-        const { attacker, defender } = getState()
+        const { attacker, defender, combat } = getState()
 
-        dispatch(calculateStats(attacker, defender))
+        dispatch(calculateStats(attacker, defender, combat))
     }
 }
 
